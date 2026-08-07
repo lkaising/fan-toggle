@@ -1,0 +1,26 @@
+# Arduino / build artifacts
+build/
+*.o
+*.d
+*.a
+*.elf
+*.eep
+*.hex
+*.bin
+
+# CLI/build caches
+*.cache
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+*.bak
+
+# IDE
+.vscode/
+
+# Local machine config
+config/local.mk
