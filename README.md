@@ -27,6 +27,8 @@ make toggle-off  # fan off
 | `list`       | Detect connected boards and ports                  |
 | `build`      | Compile the sketch to `build/` (default target)    |
 | `upload`     | Compile + flash to the board                       |
+| `build-blank`  | Compile the blank (do-nothing) sketch to `build/blank/` |
+| `upload-blank` | Flash the blank sketch — stops the fan program     |
 | `toggle-on`  | Send `'1'` over serial → pin 9 = 255               |
 | `toggle-off` | Send `'0'` over serial → pin 9 = 0                 |
 | `monitor`    | Open the serial monitor (shows `pwm=…` acks)       |
@@ -45,7 +47,7 @@ Precedence: command line > `config/local.mk` (gitignored, see
 
 ## Notes
 
-- The toggle targets sleep ~2 s before sending: opening the port can
+- The toggle targets sleep ~1 s before sending: opening the port can
   auto-reset the Uno (DTR), and the bootloader needs that long before the
   sketch is listening. The recipes clear HUPCL so repeat toggles don't reset.
 - The firmware starts with the fan off, so the state after any reset is off.

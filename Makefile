@@ -19,7 +19,7 @@ BUILD_DIR ?= build
 CLI ?= arduino-cli
 
 .DEFAULT_GOAL := build
-.PHONY: setup list build upload toggle-on toggle-off monitor clean help
+.PHONY: setup list build upload build-blank upload-blank toggle-on toggle-off monitor clean help
 
 ## setup : Install/verify pinned AVR core
 setup:
@@ -40,16 +40,26 @@ upload: build
 	$(CLI) upload --fqbn $(FQBN) --port $(PORT) --input-dir $(BUILD_DIR)
 	@echo "✓ Uploaded to $(PORT)"
 
+## build-blank : Compile blank (do-nothing) sketch
+build-blank:
+	$(CLI) compile --fqbn $(FQBN) --build-path $(BUILD_DIR)/blank --config-file $(CONFIG) blank
+	@echo "✓ Blank build complete → $(BUILD_DIR)/blank/"
+
+## upload-blank : Flash blank sketch to board (stops the fan program)
+upload-blank: build-blank
+	$(CLI) upload --fqbn $(FQBN) --port $(PORT) --input-dir $(BUILD_DIR)/blank
+	@echo "✓ Blank sketch uploaded to $(PORT)"
+
 ## toggle-on : Set fan (pin 9) to full speed — sends '1' over serial
 toggle-on:
 	@stty -F $(PORT) $(BAUD) raw -echo -hupcl clocal cread \
-	&& exec 3<>$(PORT) && sleep 2 && printf '1' >&3 && exec 3>&- \
+	&& exec 3<>$(PORT) && sleep 1 && printf '1' >&3 && exec 3>&- \
 	&& echo "✓ Fan ON (sent '1' to $(PORT))"
 
 ## toggle-off : Set fan (pin 9) off — sends '0' over serial
 toggle-off:
 	@stty -F $(PORT) $(BAUD) raw -echo -hupcl clocal cread \
-	&& exec 3<>$(PORT) && sleep 2 && printf '0' >&3 && exec 3>&- \
+	&& exec 3<>$(PORT) && sleep 1 && printf '0' >&3 && exec 3>&- \
 	&& echo "✓ Fan OFF (sent '0' to $(PORT))"
 
 ## monitor : Open serial monitor
