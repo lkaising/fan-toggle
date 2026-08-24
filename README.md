@@ -39,11 +39,12 @@ make toggle-off  # fan off
 Precedence: command line > `config/local.mk` (gitignored, see
 `config/local.mk.example`) > Makefile defaults.
 
-| Variable | Default            | Notes                                    |
-|----------|--------------------|------------------------------------------|
-| `PORT`   | `/dev/ttyACM0`     | Prefer a `/dev/serial/by-id/…` path      |
-| `FQBN`   | `arduino:avr:uno`  |                                          |
-| `BAUD`   | `9600`             | Must match `serialBaud` in the firmware  |
+| Variable | Default            | Notes                                                      |
+|----------|--------------------|------------------------------------------------------------|
+| `PORT`   | `/dev/ttyACM0`     | Prefer a stable `/dev/serial/by-id/…` or `by-path/…` path  |
+| `FQBN`   | `arduino:avr:uno`  |                                                            |
+| `BAUD`   | `9600`             | Must match `serialBaud` in the firmware                    |
+| `CLI`    | `arduino-cli`      |                                                            |
 
 ## Notes
 

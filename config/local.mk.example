@@ -5,7 +5,37 @@
 # These values override the Makefile defaults. Command-line arguments
 # (e.g. make upload PORT=/dev/ttyUSB0) still take highest priority.
 
-# PORT = /dev/ttyACM1
+# --- PORT ---------------------------------------------------------------
+# Avoid raw /dev/ttyUSB0 or /dev/ttyACM0: those numbers are assigned in
+# enumeration order and can change when other devices are attached. Find a
+# stable path with:
+#   ls -l /dev/serial/by-id/ /dev/serial/by-path/
+#
+# by-id   — follows the board between USB sockets, but only if the USB-serial
+#           chip has a burned-in serial number (FTDI does; CH340 clones do
+#           not, so all CH340s share one by-id name).
+# by-path — identifies the physical USB socket, not the board. Survives
+#           renumbering; changes if you move the cable.
+#
+# PORT = /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AQ02KL9S-if00-port0
+# PORT = /dev/serial/by-path/pci-0000:80:14.0-usb-0:6.4:1.0-port0
+
+# --- FQBN ---------------------------------------------------------------
+# List options with: arduino-cli board listall
+# The Nano's Processor menu matters: the default cpu=atmega328 uploads at
+# 115200, while older boards and most clones need cpu=atmega328old (57600).
+# A mismatch shows up as "stk500_recv(): programmer is not responding".
+#
+# FQBN = arduino:avr:uno
+# FQBN = arduino:avr:nano:cpu=atmega328old
 # FQBN = arduino:avr:mega:cpu=atmega2560
-# CLI  = /usr/local/bin/arduino-cli
+
+# --- BAUD ---------------------------------------------------------------
+# Sketch serial speed, used by toggle-on/toggle-off/monitor. Must match
+# serialBaud in src/fan_toggle.cpp. This is NOT the upload speed — that
+# comes from the FQBN's cpu variant.
+#
 # BAUD = 9600
+
+# --- CLI ----------------------------------------------------------------
+# CLI = /usr/local/bin/arduino-cli
