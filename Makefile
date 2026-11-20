@@ -53,13 +53,13 @@ upload-blank: build-blank
 ## toggle-on : Set fan (pin 9) to full speed — sends '1' over serial
 toggle-on:
 	@stty -F $(PORT) $(BAUD) raw -echo -hupcl clocal cread \
-	&& exec 3<>$(PORT) && sleep 1 && printf '1' >&3 && exec 3>&- \
+	&& exec 3<>$(PORT) && sleep 2 && printf '1' >&3 && exec 3>&- \
 	&& echo "✓ Fan ON (sent '1' to $(PORT))"
 
 ## toggle-off : Set fan (pin 9) off — sends '0' over serial
 toggle-off:
 	@stty -F $(PORT) $(BAUD) raw -echo -hupcl clocal cread \
-	&& exec 3<>$(PORT) && sleep 1 && printf '0' >&3 && exec 3>&- \
+	&& exec 3<>$(PORT) && sleep 2 && printf '0' >&3 && exec 3>&- \
 	&& echo "✓ Fan OFF (sent '0' to $(PORT))"
 
 ## monitor : Open serial monitor

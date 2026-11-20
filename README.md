@@ -48,8 +48,10 @@ Precedence: command line > `config/local.mk` (gitignored, see
 
 ## Notes
 
-- The toggle targets sleep ~1 s before sending: opening the port can
-  auto-reset the Uno (DTR), and the bootloader needs that long before the
-  sketch is listening. The recipes clear HUPCL so repeat toggles don't reset.
+- The toggle targets sleep ~2 s before sending: the first port open after
+  the board is plugged in auto-resets it (DTR), and the bootloader must
+  finish before the sketch is listening. 1 s is too short for the old Nano
+  bootloader (`cpu=atmega328old`), so the first toggle after a replug would
+  be silently dropped. The recipes clear HUPCL so repeat toggles don't reset.
 - The firmware starts with the fan off, so the state after any reset is off.
 - Wiring: see [docs/wiring.md](docs/wiring.md).
